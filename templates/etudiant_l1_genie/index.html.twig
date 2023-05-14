@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}List Des Etudiants{% endblock %}
+
+{% block body %}
+<div class="container">
+<h1> Calculabilité </h1>
+
+<section class="section">
+    	<table class="table table-bordered border-primary">
+            <thead>
+                <tr>
+					<th scope="col">N°</th>
+				    <th scope="col">NOM</th>
+				    <th scope="col">POSTNOM</th>
+				    <th scope="col">PRENOM</th>
+				    <th scope="col">SEXE</th>
+				    <th scope="col">Code</th>
+				</tr>
+            </thead>
+            <tbody>
+            {% for etudiant in etudiants %}
+                <tr>
+					<th scope="row">{{ etudiant.id }}</th>
+				    <td>{{ etudiant.nom }}</td>
+				    <td>{{ etudiant.postnom }}</td>
+				    <td>{{ etudiant.prenom }}</td>
+				    <td>{{ etudiant.sexe }}</td>
+				    <td>{{ etudiant.code }}</td>
+				</tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <div class="navigation">
+            {{ knp_pagination_render(etudiants) }}
+        </div>
+</section>
+{% endblock %}
