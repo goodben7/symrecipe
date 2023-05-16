@@ -4,6 +4,12 @@
 
 {% block body %}
 <div class="container">
+{% if not etudiants.items is same as([]) %}
+{% for message in app.flashes('succes') %}
+    <div class="alert alert-succes">
+        {{ message }}
+    </div>
+{% endfor %}
 <h1> Calculabilité </h1>
 
 <section class="section">
@@ -34,5 +40,8 @@
         <div class="navigation">
             {{ knp_pagination_render(etudiants) }}
         </div>
+	{% else %} 
+		<h4> Il n'y a pas d'etudiants </h4>
+	{% endif %}
 </section>
 {% endblock %}

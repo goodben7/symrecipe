@@ -4,9 +4,11 @@ namespace App\Entity;
 
 use App\Repository\EtudiantL1GenieRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: EtudiantL1GenieRepository::class)]
+#[UniqueEntity('code')]
 class EtudiantL1Genie
 {
     #[ORM\Id]
