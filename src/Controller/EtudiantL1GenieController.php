@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class EtudiantL1GenieController extends AbstractController
 {
     /**
-     * This function display all Etudiants
+     * This controller display all Etudiants
      *
      * @param EtudiantL1GenieRepository $respository
      * @param PaginatorInterface $paginator
@@ -34,6 +34,14 @@ class EtudiantL1GenieController extends AbstractController
         ]);
     }
 
+
+    /**
+     * This controller show a form which create an Etudiants
+     *
+     * @param Request $resquest
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
     #[Route ('/etudiant/nouveau', name:'app_etudiant_l1_genie.new', methods:['GET', 'POST'])]
     public function new(
         Request $resquest,
@@ -62,5 +70,50 @@ class EtudiantL1GenieController extends AbstractController
         return $this->render('etudiant_l1_genie/new.html.twig', [
             'form' => $form->createView()
         ]);
+    }
+
+    #[Route('/etudiant/edition/{id}', name:'app_etudiant_l1_genie.edit', methods:['GET', 'POST'])]
+    public function edit(
+        EtudiantL1Genie $etudiant,
+        Request $resquest,
+        EntityManagerInterface $manager
+        ): Response
+    {
+        $form = $this->createForm(EtudiantType::class, $etudiant); 
+
+        $form->handleRequest($resquest);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $etudiant = $form->getData(); 
+            
+            $manager->persist($etudiant);
+            $manager->flush();
+
+            $this->addFlash(
+                'succes',
+                'L\'Etudiant a été modifié avec succès'
+            );
+
+            return $this->redirectToRoute('app_etudiant_l1_genie');
+
+        }
+
+        return $this->render('etudiant_l1_genie/edit.html.twig', [
+        'form' => $form->createView()
+    ]); 
+    }
+
+    #[Route('/etudiant/supression/{id}', name: 'app_etudiant_l1_genie.delete', methods: ['GET'])]
+    public function delete(EntityManagerInterface $manager, EtudiantL1Genie $etudiant): Response 
+    {
+
+        $manager->remove($etudiant); 
+        $manager->flush();
+
+        $this->addFlash(
+            'succes',
+            'L\'Etudiant a été supprimé avec succès'
+        );
+
+        return $this->redirectToRoute('app_etudiant_l1_genie');
     }
 }
