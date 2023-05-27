@@ -20,7 +20,7 @@ class EtudiantL1GenieController extends AbstractController
      * @param EtudiantL1GenieRepository $respository
      * @param PaginatorInterface $paginator
      * @param Request $request
-     * @return Response
+     * @return Response 
      */
     #[Route('/etudiant', name: 'app_etudiant_l1_genie', methods:['GET'])]
     public function index(EtudiantL1GenieRepository $respository, PaginatorInterface $paginator, Request $request): Response
@@ -51,7 +51,7 @@ class EtudiantL1GenieController extends AbstractController
         $etudiant = new EtudiantL1Genie(); 
         $form = $this->createForm(EtudiantType::class, $etudiant); 
 
-        $form->handleRequest($resquest);
+        $form->handleRequest($resquest); 
         if ($form->isSubmitted() && $form->isValid()) {
             $etudiant = $form->getData(); 
             

@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modification des cotes{% endblock %}
+
+{% block body %}
+    <div class="container"> 
+        <h1 class="mt-4"> Modification des cotes </h1>
+        {{ form_start(form) }}
+
+             <div class="form-group"> 
+                {{ form_label(form.etudiant) }}
+                {{ form_widget(form.etudiant) }}
+                <div class="form-error">
+                    {{ form_errors(form.etudiant) }}
+                </div>
+            </div>
+            
+            <div class="form-group"> 
+                {{ form_label(form.tp1) }}
+                {{ form_widget(form.tp1) }}
+                <div class="form-error">
+                    {{ form_errors(form.tp1) }}
+                </div>
+            </div>
+
+            <div class="form-group"> 
+                {{ form_label(form.tp2) }}
+                {{ form_widget(form.tp2) }}
+                <div class="form-error">
+                    {{ form_errors(form.tp2) }}
+                </div>
+            </div>
+
+            <div class="form-group"> 
+                {{ form_label(form.interro1) }}
+                {{ form_widget(form.interro1) }}
+                <div class="form-error">
+                    {{ form_errors(form.interro1) }}
+                </div>
+            </div>
+
+            <div class="form-group"> 
+                {{ form_label(form.interro2) }}
+                {{ form_widget(form.interro2) }}
+                <div class="form-error">
+                    {{ form_errors(form.interro2) }}
+                </div>
+            </div>
+
+            <div class="form-group"> 
+                {{ form_row(form.submit) }}
+            </div>
+
+        {{ form_end(form) }}
+
+    </div>
+{% endblock %}

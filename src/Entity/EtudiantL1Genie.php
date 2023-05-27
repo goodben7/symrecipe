@@ -37,11 +37,18 @@ class EtudiantL1Genie
     #[ORM\Column(length: 8)]
     private ?string $code = null;
 
+    #[ORM\OneToOne(mappedBy: 'etudiant', cascade: ['persist', 'remove'])]
+    private ?CoteL1Genie $coteL1Genie = null;
+
     public function __construct()
     {
         $this->code = random_bytes(4);
         $this->code = (bin2hex($this->code)); 
         $this->code = strtoupper($this->code);
+    }
+    public function __toString()
+    {
+        return $this->nom; 
     }
 
     public function getId(): ?int
@@ -105,6 +112,23 @@ class EtudiantL1Genie
     public function setCode(string $code): self
     {
         $this->code = strtoupper($code);
+
+        return $this;
+    }
+
+    public function getCoteL1Genie(): ?CoteL1Genie
+    {
+        return $this->coteL1Genie;
+    }
+
+    public function setCoteL1Genie(CoteL1Genie $coteL1Genie): self
+    {
+        // set the owning side of the relation if necessary
+        if ($coteL1Genie->getEtudiant() !== $this) {
+            $coteL1Genie->setEtudiant($this);
+        }
+
+        $this->coteL1Genie = $coteL1Genie;
 
         return $this;
     }
