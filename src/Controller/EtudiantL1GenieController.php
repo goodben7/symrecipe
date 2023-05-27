@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\CoteL1Genie;
 use App\Entity\EtudiantL1Genie;
 use App\Form\EtudiantType;
 use App\Repository\EtudiantL1GenieRepository;
@@ -43,7 +44,7 @@ class EtudiantL1GenieController extends AbstractController
      * @return Response
      */
     #[Route ('/etudiant/nouveau', name:'app_etudiant_l1_genie.new', methods:['GET', 'POST'])]
-    public function new(
+    public function new( 
         Request $resquest,
         EntityManagerInterface $manager
         ): Response
@@ -56,6 +57,11 @@ class EtudiantL1GenieController extends AbstractController
             $etudiant = $form->getData(); 
             
             $manager->persist($etudiant);
+
+            $cote = new CoteL1Genie(); 
+            $cote->setEtudiant($etudiant);
+            $manager->persist($cote);
+
             $manager->flush();
 
             $this->addFlash(

@@ -4,16 +4,18 @@ namespace App\DataFixtures;
 
 use App\Entity\CoteL1Genie;
 use App\Entity\EtudiantL1Genie;
+use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 //use Doctrine\DBAL\Driver\IBMDB2\Exception\Factory;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Generator;
 use Faker\Factory;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AppFixtures extends Fixture
 {
     private Generator $faker; 
-
+    
     public function __construct()
     {
         $this->faker = Factory::create('fr_FR'); 
@@ -41,6 +43,20 @@ class AppFixtures extends Fixture
                 ->setTp1($this->faker->randomElement(['2','5', '10', '15', '16']))
                 ->setTp2($this->faker->randomElement(['1','2','5', '10', '15', '16']));
             $manager->persist($cote);
+        }
+
+        for ($k=0; $k < 5 ; $k++) { 
+            $user = new User(); 
+            $user->setNom($this->faker->firstName($gender = 'male'|'female'))
+                ->setPostnom($this->faker->lastName())
+                ->setPrenom($this->faker->firstName())
+                ->setSexe($this->faker->randomElement(['M', 'F']))
+                ->setEmail($this->faker->email())
+                ->setRoles(['ROLE_USER'])
+                ->setPlainPassword('password');
+
+            $manager->persist($user);
+            
         }
         
         $manager->flush();
