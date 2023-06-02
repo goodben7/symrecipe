@@ -2,16 +2,18 @@
 
 namespace App\Controller;
 
+use App\Form\EtudiantType;
 use App\Entity\CoteL1Genie;
 use App\Entity\EtudiantL1Genie;
-use App\Form\EtudiantType;
-use App\Repository\EtudiantL1GenieRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\EtudiantL1GenieRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class EtudiantL1GenieController extends AbstractController
 {
@@ -24,6 +26,7 @@ class EtudiantL1GenieController extends AbstractController
      * @return Response 
      */
     #[Route('/etudiant', name: 'app_etudiant_l1_genie', methods:['GET'])]
+    #[IsGranted('ROLE_USER')]
     public function index(EtudiantL1GenieRepository $respository, PaginatorInterface $paginator, Request $request): Response
     {
         $etudiants = $paginator->paginate(
@@ -44,6 +47,7 @@ class EtudiantL1GenieController extends AbstractController
      * @return Response
      */
     #[Route ('/etudiant/nouveau', name:'app_etudiant_l1_genie.new', methods:['GET', 'POST'])]
+    #[IsGranted('ROLE_USER')]
     public function new( 
         Request $resquest,
         EntityManagerInterface $manager
@@ -82,6 +86,7 @@ class EtudiantL1GenieController extends AbstractController
     }
 
     #[Route('/etudiant/edition/{id}', name:'app_etudiant_l1_genie.edit', methods:['GET', 'POST'])]
+    #[Security("is_granted('ROLE_USER') and user === etudiant.getUser()")]
     public function edit(
         EtudiantL1Genie $etudiant,
         Request $resquest,
@@ -112,6 +117,7 @@ class EtudiantL1GenieController extends AbstractController
     }
 
     #[Route('/etudiant/supression/{id}', name: 'app_etudiant_l1_genie.delete', methods: ['GET'])]
+    #[Security("is_granted('ROLE_USER') and user === etudiant.getUser()")]
     public function delete(EntityManagerInterface $manager, EtudiantL1Genie $etudiant): Response 
     {
 

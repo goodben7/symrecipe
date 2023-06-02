@@ -56,6 +56,7 @@
         </div>
 	{% else %} 
 		<h4> Il n'y a pas d'etudiants </h4>
+		<a href="{{ path('app_etudiant_l1_genie.new') }}" class="btn btn-primary mt-4"> Ajouter un Etudiant </a>
 	{% endif %}
 </section>
 {% endblock %}
