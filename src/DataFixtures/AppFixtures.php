@@ -22,6 +22,23 @@ class AppFixtures extends Fixture
     }
     public function load(ObjectManager $manager): void
     {
+        //user
+        $users = [];
+        for ($k=0; $k < 5 ; $k++) { 
+            $user = new User(); 
+            $user->setNom($this->faker->firstName($gender = 'male'|'female'))
+                ->setPostnom($this->faker->lastName())
+                ->setPrenom($this->faker->firstName())
+                ->setSexe($this->faker->randomElement(['M', 'F']))
+                ->setEmail($this->faker->email())
+                ->setRoles(['ROLE_USER'])
+                ->setPlainPassword('password');
+
+            $users [] = $user;
+            $manager->persist($user);
+            
+        }
+
         //Etudiant 
         $etdudaints = [];
         for ($i=0; $i < 10 ; $i++) { 
@@ -29,7 +46,8 @@ class AppFixtures extends Fixture
             $etdudaint->setNom($this->faker->firstName($gender = 'male'|'female'))
                 ->setPostnom($this->faker->lastName())
                 ->setPrenom($this->faker->firstName())
-                ->setSexe($this->faker->randomElement(['M', 'F']));
+                ->setSexe($this->faker->randomElement(['M', 'F']))
+                ->setUser($users[mt_rand(0, count($users)-1)]);
 
             $etdudaints[] = $etdudaint; 
             $manager->persist($etdudaint);
@@ -41,22 +59,9 @@ class AppFixtures extends Fixture
             $cote = new CoteL1Genie(); 
             $cote->setEtudiant($etdudaints[$j])
                 ->setTp1($this->faker->randomElement(['2','5', '10', '15', '16']))
-                ->setTp2($this->faker->randomElement(['1','2','5', '10', '15', '16']));
+                ->setTp2($this->faker->randomElement(['1','2','5', '10', '15', '16']))
+                ->setUser($users[mt_rand(0, count($users)-1)]);
             $manager->persist($cote);
-        }
-
-        for ($k=0; $k < 5 ; $k++) { 
-            $user = new User(); 
-            $user->setNom($this->faker->firstName($gender = 'male'|'female'))
-                ->setPostnom($this->faker->lastName())
-                ->setPrenom($this->faker->firstName())
-                ->setSexe($this->faker->randomElement(['M', 'F']))
-                ->setEmail($this->faker->email())
-                ->setRoles(['ROLE_USER'])
-                ->setPlainPassword('password');
-
-            $manager->persist($user);
-            
         }
         
         $manager->flush();

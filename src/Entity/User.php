@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -55,6 +57,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 1)]
     private ?string $sexe = null;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: EtudiantL1Genie::class, orphanRemoval: true)]
+    private Collection $etudiants;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: CoteL1Genie::class, orphanRemoval: true)]
+    private Collection $cotes;
+
+    public function __construct()
+    {
+        $this->etudiants = new ArrayCollection();
+        $this->cotes = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -190,6 +204,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPlainPassword($plainPassword)
     {
         $this->plainPassword = $plainPassword;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, EtudiantL1Genie>
+     */
+    public function getEtudiants(): Collection
+    {
+        return $this->etudiants;
+    }
+
+    public function addEtudiant(EtudiantL1Genie $etudiant): self
+    {
+        if (!$this->etudiants->contains($etudiant)) {
+            $this->etudiants->add($etudiant);
+            $etudiant->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEtudiant(EtudiantL1Genie $etudiant): self
+    {
+        if ($this->etudiants->removeElement($etudiant)) {
+            // set the owning side to null (unless already changed)
+            if ($etudiant->getUser() === $this) {
+                $etudiant->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CoteL1Genie>
+     */
+    public function getCotes(): Collection
+    {
+        return $this->cotes;
+    }
+
+    public function addCote(CoteL1Genie $cote): self
+    {
+        if (!$this->cotes->contains($cote)) {
+            $this->cotes->add($cote);
+            $cote->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCote(CoteL1Genie $cote): self
+    {
+        if ($this->cotes->removeElement($cote)) {
+            // set the owning side to null (unless already changed)
+            if ($cote->getUser() === $this) {
+                $cote->setUser(null);
+            }
+        }
 
         return $this;
     }

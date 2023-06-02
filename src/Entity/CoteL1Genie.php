@@ -29,6 +29,10 @@ class CoteL1Genie
     #[ORM\JoinColumn(nullable: false)]
     private ?EtudiantL1Genie $etudiant = null;
 
+    #[ORM\ManyToOne(inversedBy: 'cotes')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
     public function __construct()
     {
         $this->tp1 = '-';
@@ -98,6 +102,18 @@ class CoteL1Genie
     public function setEtudiant(EtudiantL1Genie $etudiant): self
     {
         $this->etudiant = $etudiant;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

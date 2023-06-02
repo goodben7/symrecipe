@@ -40,6 +40,10 @@ class EtudiantL1Genie
     #[ORM\OneToOne(mappedBy: 'etudiant', cascade: ['persist', 'remove'])]
     private ?CoteL1Genie $coteL1Genie = null;
 
+    #[ORM\ManyToOne(inversedBy: 'etudiants')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
     public function __construct()
     {
         $this->code = random_bytes(4);
@@ -129,6 +133,18 @@ class EtudiantL1Genie
         }
 
         $this->coteL1Genie = $coteL1Genie;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

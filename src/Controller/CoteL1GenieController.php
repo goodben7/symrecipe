@@ -18,7 +18,7 @@ class CoteL1GenieController extends AbstractController
     public function index(CoteL1GenieRepository $respository, PaginatorInterface $paginator, Request $request): Response
     {
         $cotes = $paginator->paginate(
-            $respository->findAll(), 
+            $respository->findBy(['user' => $this->getUser()]), 
             $request->query->getInt('page', 1), 10 
         );
         return $this->render('cote_l1_genie/index.html.twig', [

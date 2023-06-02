@@ -27,7 +27,7 @@ class EtudiantL1GenieController extends AbstractController
     public function index(EtudiantL1GenieRepository $respository, PaginatorInterface $paginator, Request $request): Response
     {
         $etudiants = $paginator->paginate(
-            $respository->findAll(),
+            $respository->findBy(['user' => $this->getUser()]),
             $request->query->getInt('page', 1), 10 
         );
         return $this->render('etudiant_l1_genie/index.html.twig', [
@@ -55,11 +55,14 @@ class EtudiantL1GenieController extends AbstractController
         $form->handleRequest($resquest); 
         if ($form->isSubmitted() && $form->isValid()) {
             $etudiant = $form->getData(); 
+            $etudiant->setUser($this->getUser());
             
             $manager->persist($etudiant);
 
             $cote = new CoteL1Genie(); 
+            $cote->setUser($this->getUser());
             $cote->setEtudiant($etudiant);
+
             $manager->persist($cote);
 
             $manager->flush();
