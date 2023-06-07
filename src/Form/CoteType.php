@@ -84,7 +84,7 @@ class CoteType extends AbstractType
                 'attr' => [
                     'class' => 'form-control'
                 ],
-                'label' => 'Nom',
+                'label' => 'Full name',
                 'label_attr' => [
                     'class' => 'form-label mt-4'
                 ]

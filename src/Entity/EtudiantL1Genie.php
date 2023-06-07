@@ -52,7 +52,7 @@ class EtudiantL1Genie
     }
     public function __toString()
     {
-        return $this->nom; 
+        return $this->nom.' '. $this->postnom.' '. $this->prenom;
     }
 
     public function getId(): ?int

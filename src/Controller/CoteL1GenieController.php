@@ -16,7 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class CoteL1GenieController extends AbstractController
 {
-    #[Route('/cote', name: 'app_cote_l1_genie', methods:['GET'])]
+    #[Route('/cote', name: 'app_cote_l1_genie', methods:['GET'])] 
     #[IsGranted('ROLE_USER')]
     public function index(CoteL1GenieRepository $respository, PaginatorInterface $paginator, Request $request): Response
     {
